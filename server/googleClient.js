@@ -34,7 +34,9 @@ export function getSheetsClient() {
   if (sheetsClient) return sheetsClient;
   const { email, privateKey } = loadServiceAccountCreds();
   if (!email || !privateKey) {
-    throw new Error('Missing Google service account credentials');
+    throw new Error(
+      'Missing Google service account. On Vercel, set GOOGLE_SERVICE_ACCOUNT_JSON to the full service-account JSON.'
+    );
   }
   const auth = new google.auth.JWT({
     email,

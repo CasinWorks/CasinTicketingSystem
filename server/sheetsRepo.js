@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadServiceAccountCreds } from './googleClient.js';
+import { getOp, resolveSheetId } from './opsConfig.js';
 
 dotenv.config();
 
@@ -53,22 +55,13 @@ function writeMockStore(tickets) {
 }
 
 function loadServiceAccount() {
-  const filePath = process.env.GOOGLE_SERVICE_ACCOUNT_FILE;
-  if (filePath) {
-    const absolute = path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);
-    const raw = JSON.parse(fs.readFileSync(absolute, 'utf8'));
-    return {
-      email: raw.client_email,
-      privateKey: raw.private_key,
-      sheetId: process.env.SHEET_ID,
-    };
-  }
-
-  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-  const sheetId = process.env.SHEET_ID;
-
-  return { email, privateKey, sheetId };
+  const creds = loadServiceAccountCreds();
+  const op = getOp('service-desk');
+  return {
+    email: creds.email,
+    privateKey: creds.privateKey,
+    sheetId: op ? resolveSheetId(op) : '',
+  };
 }
 
 function getAuth() {

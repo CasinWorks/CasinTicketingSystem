@@ -20,7 +20,7 @@ import {
 } from './validate.js';
 import { computeStats } from './stats.js';
 import { projectStats, leadStats } from './opsStats.js';
-import { listOpsPublic, getOp } from './opsConfig.js';
+import { listOpsPublic, getOp, resolveSheetId } from './opsConfig.js';
 import { loadFinanceBundle } from './financeRepo.js';
 import { financeDashboard, expenseSummaries } from './financeStats.js';
 
@@ -57,7 +57,7 @@ app.get('/api/health', (_req, res) => {
     ok: true,
     product: 'CasinWorks OPS',
     dataSource: USE_MOCK ? 'mock' : 'google-sheets',
-    sheetId: USE_MOCK ? null : process.env.SHEET_ID_SERVICE_DESK || process.env.SHEET_ID || null,
+    sheetId: USE_MOCK ? null : resolveSheetId(getOp('service-desk')) || null,
     serviceAccount: USE_MOCK ? null : getServiceAccountEmail(),
     ops: listOpsPublic().map((o) => ({ id: o.id, status: o.status })),
   });

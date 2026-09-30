@@ -80,12 +80,21 @@ export function getOp(opId) {
   return OPS.find((o) => o.id === opId) || null;
 }
 
+/** Used when the host has no sheet env vars (Vercel). Override with env. */
+const DEFAULT_SHEET_IDS = {
+  SHEET_ID_SERVICE_DESK: '1bxVxKX3X5oWD43V--GLSpXyyrKXikEjIMKwJPLmCT3M',
+  SHEET_ID: '1bxVxKX3X5oWD43V--GLSpXyyrKXikEjIMKwJPLmCT3M',
+  SHEET_ID_PROJECT_MANAGER: '1GTFZwxfy3A5QP7SGPu1B_Viofc518Q7teF_wwRGSjYg',
+  SHEET_ID_LEADS: '1GTFZwxfy3A5QP7SGPu1B_Viofc518Q7teF_wwRGSjYg',
+  FINANCE_SHEET_ID: '15qECt9vONPGPot0GsNo43NUlUanMbwpA41uyBJhQ4Ys',
+};
+
 export function resolveSheetId(op) {
-  const primary = process.env[op.sheetEnv];
-  if (primary && primary.trim()) return primary.trim();
+  const primary = process.env[op.sheetEnv] || DEFAULT_SHEET_IDS[op.sheetEnv];
+  if (primary && String(primary).trim()) return String(primary).trim();
   if (op.sheetEnvFallback) {
-    const fallback = process.env[op.sheetEnvFallback];
-    if (fallback && fallback.trim()) return fallback.trim();
+    const fallback = process.env[op.sheetEnvFallback] || DEFAULT_SHEET_IDS[op.sheetEnvFallback];
+    if (fallback && String(fallback).trim()) return String(fallback).trim();
   }
   return '';
 }

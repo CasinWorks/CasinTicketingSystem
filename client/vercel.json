@@ -1,12 +1,13 @@
 {
   "buildCommand": "node scripts/stage-server.mjs && vite build",
   "functions": {
-    "api/**/*.mjs": {
+    "api/index.mjs": {
       "maxDuration": 30,
       "includeFiles": "server/**"
     }
   },
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api?__path=$1" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
