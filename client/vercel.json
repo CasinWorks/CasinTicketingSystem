@@ -1,7 +1,9 @@
 {
+  "buildCommand": "node scripts/stage-server.mjs && vite build",
   "functions": {
     "api/**/*.mjs": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "includeFiles": "server/**"
     }
   },
   "rewrites": [

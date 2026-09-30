@@ -16,6 +16,9 @@ server/casinworks-sdpm-*.json
 **/*-service-account*.json
 **/casinworks-sdpm-*.json
 
+# Staged copy of the API for the Vercel client project
+client/server/
+
 # Build
 dist/
 build/
