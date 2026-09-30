@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="6" y1="2" x2="58" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3DB8A8"/>
+      <stop offset="1" stop-color="#A8D96A"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  <!-- soft owl face -->
+  <ellipse cx="32" cy="30" rx="16" ry="15" fill="#F3E6D0"/>
+  <ellipse cx="32" cy="34" rx="10" ry="8" fill="#EAD7BA"/>
+  <!-- blush -->
+  <ellipse cx="22" cy="34" rx="3" ry="1.6" fill="#F2A8B8" opacity="0.75"/>
+  <ellipse cx="42" cy="34" rx="3" ry="1.6" fill="#F2A8B8" opacity="0.75"/>
+  <!-- eyes -->
+  <circle cx="25.5" cy="28" r="5.2" fill="#2F9E9A"/>
+  <circle cx="38.5" cy="28" r="5.2" fill="#2F9E9A"/>
+  <circle cx="25.5" cy="28" r="2.2" fill="#1A2A3A"/>
+  <circle cx="38.5" cy="28" r="2.2" fill="#1A2A3A"/>
+  <circle cx="24.2" cy="26.6" r="1.1" fill="#fff"/>
+  <circle cx="37.2" cy="26.6" r="1.1" fill="#fff"/>
+  <!-- beak -->
+  <path d="M32 31.5l2.4 2.6h-4.8L32 31.5z" fill="#E07A3A"/>
+  <!-- clipboard -->
+  <rect x="22" y="42" width="20" height="14" rx="2.5" fill="#2F9E9A"/>
+  <rect x="24.5" y="44" width="15" height="10" rx="1.5" fill="#fff"/>
+  <circle cx="32" cy="49" r="3.2" fill="#5DBF6A"/>
+  <path d="M30.4 49.1l1.2 1.2 2.4-2.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

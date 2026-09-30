@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Env / secrets
+.env
+server/.env
+client/.env
+client/.env.local
+server/.mock-tickets.json
+server/.mock-projects.json
+server/.mock-leads.json
+server/google-service-account.json
+server/casinworks-sdpm-*.json
+**/credentials*.json
+**/*-service-account*.json
+**/casinworks-sdpm-*.json
+
+# Build
+dist/
+build/
+dist-desktop/
+*.log
+.DS_Store
+
+# Editors
+.idea/
+.vscode/
+*.swp

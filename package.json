@@ -1,0 +1,66 @@
+{
+  "name": "casinworks-ops",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CasinWorks OPS desktop app",
+  "main": "desktop/main.cjs",
+  "author": "CasinWorks",
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "seed": "npm --prefix server run seed",
+    "start": "npm --prefix server start",
+    "build:client": "npm --prefix client run build",
+    "desktop:dev": "npm run build:client && electron .",
+    "desktop:dmg": "npm run build:client && electron-builder --mac dmg"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.casinworks.ops",
+    "productName": "CasinWorks OPS",
+    "copyright": "Copyright © CasinWorks",
+    "directories": {
+      "output": "dist-desktop"
+    },
+    "files": [
+      "desktop/main.cjs",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "server",
+        "to": "server",
+        "filter": [
+          "**/*",
+          "!.mock-*",
+          "!**/.DS_Store"
+        ]
+      },
+      {
+        "from": "client/dist",
+        "to": "client-dist"
+      }
+    ],
+    "mac": {
+      "icon": "desktop/build/icon.icns",
+      "category": "public.app-category.business",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null
+    },
+    "dmg": {
+      "title": "CasinWorks OPS"
+    }
+  }
+}
