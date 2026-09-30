@@ -34,9 +34,10 @@ const USE_MOCK = process.env.MOCK_SHEETS === 'true';
 const CLIENT_DIST =
   process.env.CLIENT_DIST || path.join(__dirname, '../client/dist');
 
+app.set('trust proxy', 1);
 app.use(
   cors({
-    origin: CLIENT_ORIGIN,
+    origin: true,
     methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
@@ -441,3 +442,5 @@ if (isDirectRun) {
     process.exit(1);
   });
 }
+
+export default app;

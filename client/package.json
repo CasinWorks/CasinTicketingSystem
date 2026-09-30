@@ -12,7 +12,8 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-router-dom": "^7.18.4",
-    "recharts": "^3.10.1"
+    "recharts": "^3.10.1",
+    "ticketing-server": "file:../server"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",

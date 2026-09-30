@@ -11,6 +11,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 let sheetsClient = null;
 
 export function loadServiceAccountCreds() {
+  const json = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+  if (json && json.trim()) {
+    const raw = JSON.parse(json);
+    return { email: raw.client_email, privateKey: raw.private_key };
+  }
+
   const filePath = process.env.GOOGLE_SERVICE_ACCOUNT_FILE;
   if (filePath) {
     const absolute = path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);

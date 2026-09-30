@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 
 const TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
-const sessions = new Map();
 
 function resolveRole(password) {
   const ownerPass = process.env.APP_OWNER_PASSWORD;
@@ -13,6 +12,35 @@ function resolveRole(password) {
     return ownerPass ? 'member' : 'owner';
   }
   return null;
+}
+
+function tokenSecret() {
+  return process.env.TOKEN_SECRET || process.env.APP_OWNER_PASSWORD || process.env.APP_PASSWORD || '';
+}
+
+function signToken(role) {
+  const payload = Buffer.from(
+    JSON.stringify({ role, exp: Date.now() + TOKEN_TTL_MS })
+  ).toString('base64url');
+  const sig = crypto.createHmac('sha256', tokenSecret()).update(payload).digest('base64url');
+  return `${payload}.${sig}`;
+}
+
+function readToken(token) {
+  if (!token || !token.includes('.')) return null;
+  const [payload, sig] = token.split('.');
+  if (!payload || !sig) return null;
+  const expected = crypto.createHmac('sha256', tokenSecret()).update(payload).digest('base64url');
+  const a = Buffer.from(sig);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+  try {
+    const data = JSON.parse(Buffer.from(payload, 'base64url').toString());
+    if (!data?.role || !data.exp || Date.now() > data.exp) return null;
+    return data;
+  } catch {
+    return null;
+  }
 }
 
 export function login(password) {
@@ -29,21 +57,15 @@ export function login(password) {
     throw err;
   }
 
-  const token = crypto.randomBytes(32).toString('hex');
-  sessions.set(token, { createdAt: Date.now(), role });
-  return { token, role };
+  return { token: signToken(role), role };
 }
 
 function getSession(req) {
   const header = req.headers.authorization || '';
   const token = header.startsWith('Bearer ') ? header.slice(7) : null;
-  if (!token || !sessions.has(token)) return null;
-  const session = sessions.get(token);
-  if (Date.now() - session.createdAt > TOKEN_TTL_MS) {
-    sessions.delete(token);
-    return null;
-  }
-  return { token, ...session };
+  const data = readToken(token);
+  if (!data) return null;
+  return { token, role: data.role, createdAt: data.exp - TOKEN_TTL_MS };
 }
 
 export function requireAuth(req, res, next) {
@@ -74,6 +96,6 @@ export function getMe(req) {
   return { role: session.role, isOwner: session.role === 'owner' };
 }
 
-export function logout(token) {
-  if (token) sessions.delete(token);
+export function logout(_token) {
+  // Tokens are signed and stateless so they stay valid across Vercel instances.
 }
